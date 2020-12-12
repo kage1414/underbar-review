@@ -349,10 +349,10 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function (func, wait) {
-    setTimeout(function (arg1, arg2) {
-      var args = [];
-      args.push(arg1, arg2);
-      func.apply(args);
+    var args = [].slice.call(arguments, 2);
+
+    return setTimeout(function () {
+      func.apply(Object.create(null), args);
     }, wait);
   };
 
@@ -370,9 +370,22 @@
   _.shuffle = function (array) {
     var result = [];
     var idx = [];
+
     for (var i = 0; i < array.length; i++) {
-      
+      var found = false;
+
+      while (!found) {
+        var newIdx = Math.floor(Math.random() * array.length);
+
+        if (idx.includes(newIdx) === false) {
+          idx.push(newIdx);
+          result.push(array[newIdx]);
+          found = true;
+        }
+      }
     }
+
+    return result;
   };
 
 
