@@ -182,8 +182,14 @@
       var i = 0;
     }
 
-    for (i; i < collection.length; i++) {
-      accumulator = iterator(accumulator, collection[i]);
+    if (Array.isArray(collection)) {
+      for (i; i < collection.length; i++) {
+        accumulator = iterator(accumulator, collection[i]);
+      }
+    } else {
+      for (var keys in collection) {
+        accumulator = iterator(accumulator, collection[keys]);
+      }
     }
 
     return accumulator;
@@ -223,6 +229,20 @@
   // provided, provide a default one
   _.some = function (collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if (collection.length === 0) {
+      return false;
+    }
+
+    if (iterator === undefined) {
+      iterator = _.identity;
+    }
+
+    for (var i = 0; i < collection.length; i++) {
+      if (Boolean(iterator(collection[i])) === true) {
+        return true;
+      }
+    }
+    return false;
   };
 
   /**
