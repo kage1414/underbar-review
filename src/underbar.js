@@ -400,13 +400,6 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function (collection, functionOrKey, args) {
-    var result = [];
-
-    _.each(collection, function() {
-      functionOrKey.apply(null, args);
-    });
-
-    return result;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -422,18 +415,47 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function () {
+    var result = [];
+    var longest = arguments[0];
+    for (var i = 1; i < arguments.length; i++) {
+      if (arguments[i].length > longest.length) {
+        var longest = arguments[i];
+      }
+    }
+
+    for (var j = 0; j < longest.length; j++) {
+      var subArr = [];
+      for (var k = 0; k < arguments.length; k++) {
+        subArr.push(arguments[k][j]);
+      }
+      result.push(subArr);
+    }
+
+    return result;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
   // The new array should contain all elements of the multidimensional array.
   //
   // Hint: Use Array.isArray to check if something is an array
+
   _.flatten = function (nestedArray, result) {
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function () {
+    var result = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+      for (var j = 0; j < arguments.length; j++) {
+        if (arguments[0][i] === arguments[1][j]) {
+          result.push(arguments[0][i]);
+        }
+      }
+    }
+
+    return result;
   };
 
   // Take the difference between one array and a number of other arrays.
